@@ -1,0 +1,25 @@
+{
+  "title": "Senior Software Engineer",
+  "company": "TechCorp Inc",
+  "description": "We are looking for a Senior Software Engineer to join our growing team. You will be responsible for designing and implementing scalable software solutions, mentoring junior developers, and contributing to our technical architecture decisions.",
+  "requirements": [
+    "5+ years of software development experience",
+    "Strong proficiency in Python, JavaScript, or Java",
+    "Experience with cloud platforms (AWS, GCP, or Azure)",
+    "Knowledge of microservices architecture",
+    "Experience with databases (SQL and NoSQL)",
+    "Strong problem-solving and communication skills"
+  ],
+  "location": "San Francisco, CA (Hybrid)",
+  "salary": "$140,000 - $180,000",
+  "type": "Full-time",
+  "posted_date": "2024-01-15",
+  "benefits": [
+    "Health insurance",
+    "401k matching",
+    "Stock options",
+    "Flexible work arrangements",
+    "Professional development budget"
+  ]
+}
+

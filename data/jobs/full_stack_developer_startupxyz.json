@@ -1,0 +1,26 @@
+{
+  "title": "Full Stack Developer",
+  "company": "StartupXYZ",
+  "description": "Join our fast-growing startup as a Full Stack Developer. You'll work on both frontend and backend development, contribute to product decisions, and help shape our technical direction as we scale.",
+  "requirements": [
+    "3+ years of full-stack development experience",
+    "Proficiency in React.js and Node.js",
+    "Experience with TypeScript",
+    "Knowledge of RESTful APIs and GraphQL",
+    "Experience with PostgreSQL or MongoDB",
+    "Familiarity with Docker and CI/CD",
+    "Startup experience preferred"
+  ],
+  "location": "Remote",
+  "salary": "$90,000 - $120,000",
+  "type": "Full-time",
+  "posted_date": "2024-01-20",
+  "benefits": [
+    "Equity participation",
+    "Health insurance",
+    "Unlimited PTO",
+    "Remote work stipend",
+    "Learning and development budget"
+  ]
+}
+

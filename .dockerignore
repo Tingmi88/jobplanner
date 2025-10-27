@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# Jupyter
+*.ipynb_checkpoints/
+
+# Git
+.git/
+.gitignore
+
+# OS/editor
+.DS_Store
+Thumbs.db
+
+# Local data & artifacts
+.env
+.env.*
+*.log
+tmp/
+dist/
+build/
+
+# Big folders you don’t need at runtime
+data/raw/
+notebooks/

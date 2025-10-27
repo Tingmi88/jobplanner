@@ -1,0 +1,15 @@
+services:
+  jobplanner:
+    type: web
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn app.api:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: NEBIUS_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+    healthCheckPath: /health
+    autoDeploy: true
+

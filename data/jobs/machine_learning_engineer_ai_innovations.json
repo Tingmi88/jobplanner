@@ -1,0 +1,26 @@
+{
+  "title": "Machine Learning Engineer",
+  "company": "AI Innovations Ltd",
+  "description": "We're seeking a Machine Learning Engineer to join our AI research team. You'll work on cutting-edge ML projects, develop and deploy models, and collaborate with data scientists and product teams to bring AI solutions to market.",
+  "requirements": [
+    "Master's degree in Computer Science, ML, or related field",
+    "3+ years of ML engineering experience",
+    "Strong Python programming skills",
+    "Experience with ML frameworks (TensorFlow, PyTorch, scikit-learn)",
+    "Knowledge of MLOps and model deployment",
+    "Experience with cloud ML services",
+    "Strong mathematical foundation in statistics and linear algebra"
+  ],
+  "location": "New York, NY",
+  "salary": "$130,000 - $160,000",
+  "type": "Full-time",
+  "posted_date": "2024-01-18",
+  "benefits": [
+    "Competitive salary and equity",
+    "Comprehensive health benefits",
+    "401k with company matching",
+    "Conference and training budget",
+    "Flexible work schedule"
+  ]
+}
+
