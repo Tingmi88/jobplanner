@@ -3,6 +3,8 @@ FastAPI routes for the JobPlanner application.
 """
 from pydantic import BaseModel
 from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+
 from app.graph_runtime import planner_agent
 import time, logging, json, uuid
 from app.logging_setup import setup_logging, RequestIdFilter
@@ -18,6 +20,14 @@ class PlanIn(BaseModel):
 @app.get("/health")
 def health():
     return {"ok": True}
+
+
+@app.get("/", response_class=HTMLResponse)
+def root():
+    return """
+    <h2>JobPlanner API</h2>
+    <p>Try <a href="/docs">/docs</a> for the interactive API, or <code>/health</code>.</p>
+    """
 
 @app.post("/plan")
 def plan(payload: PlanIn):
