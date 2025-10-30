@@ -4,4 +4,4 @@ venv/
 *.ipynb_checkpoints/
 .env
 *.ipynb
-notebooks/
+notebooks/# test
