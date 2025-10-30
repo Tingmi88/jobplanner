@@ -24,6 +24,18 @@ executor_logger = logging.getLogger("jobplanner.nodes.executor")
 synthesizer_logger = logging.getLogger("jobplanner.nodes.synthesizer")
 router_logger = logging.getLogger("jobplanner.nodes.router")
 
+def sanitize_model_output(text: Optional[str]) -> str:
+    """Remove chain-of-thought or thinking sections from model output.
+
+    Strips blocks like <think>...</think> and common reasoning headers.
+    """
+    if not text:
+        return ""
+    cleaned = re.sub(r"(?is)<think>[\s\S]*?</think>", "", text)
+    # Remove leading sections labeled as Thought/Reasoning/etc. up to a blank line
+    cleaned = re.sub(r"(?is)^(thoughts?|reasoning|analysis)\s*:\s*[\s\S]*?(?=\n\s*\n|\Z)", "", cleaned).strip()
+    return cleaned
+
 
 web_search = TavilySearch(api_key=os.environ["TAVILY_API_KEY"], max_results=2)
 
@@ -53,6 +65,19 @@ class Plan(BaseModel):
     A structured plan for a multi-step task
     """
     steps: List[str] = Field(description="A list of tool calls that, when executed, will answer the query.")
+
+class DayPlan(BaseModel):
+    """A single day's preparation plan."""
+    day: int = Field(description="Day number, starting from 1")
+    title: Optional[str] = Field(default=None, description="Optional title for the day")
+    goals: List[str] = Field(default_factory=list, description="Key learning or preparation goals")
+    tasks: List[str] = Field(default_factory=list, description="Concrete tasks or actions for the day")
+    resources: Optional[List[str]] = Field(default=None, description="Links or resource names to use")
+
+class WeeklyPlan(BaseModel):
+    """A multi-day preparation plan, e.g., 5–14 days."""
+    summary: Optional[str] = Field(default=None, description="High-level summary of the plan")
+    days: List[DayPlan] = Field(description="Ordered list of daily plans")
 
 class PlannerState(TypedDict):
     """
@@ -310,7 +335,10 @@ def job_aware_executor_node(state: PlannerState) -> PlannerState:
         raise
 
 def synthesizer_node(state: PlannerState) -> PlannerState:
-    """Synthesizes the intermediate messages into a final output."""
+    """Synthesizes the intermediate messages into a final output.
+
+    Uses structured output (WeeklyPlan) to avoid surfacing chain-of-thought.
+    """
     intermediate_messages = state.get("intermediate_messages") or []
     context_length = len("\n".join(intermediate_messages))
     
@@ -336,15 +364,57 @@ def synthesizer_node(state: PlannerState) -> PlannerState:
             }
         )
 
-        prompt = f"""You are an expert synthesizer. Based on the user's input and the collected data, provide a comprehensive final answer.
-    
-    Request: {user_input}
-    Collected Data:
-    {context}
-    """
+        prompt = f"""You are an expert synthesizer. Create a concise, actionable multi-day plan.
+
+Only output fields required by the provided schema. Do not include thoughts or chain-of-thought.
+
+Request: {user_input}
+Collected Data:
+{context}
+"""
         
-        synthesizer_logger.debug("Invoking LLM for synthesis")
-        final_output = llm.invoke(prompt).content
+        # Ask the model for structured output
+        structured_llm = llm.with_structured_output(WeeklyPlan)
+        weekly_plan: WeeklyPlan = structured_llm.invoke(prompt)
+        
+        # Log structured content at debug for observability
+        try:
+            import json as _json
+            synthesizer_logger.debug(
+                "Structured plan generated",
+                extra={
+                    "days_count": len(weekly_plan.days or []),
+                    "summary_preview": (weekly_plan.summary or "")[:200],
+                    "json_preview": _json.dumps(weekly_plan.model_dump(), ensure_ascii=False)[:2000],
+                }
+            )
+        except Exception:
+            pass
+
+        # Render a pleasant markdown for final_output
+        lines: List[str] = []
+        if weekly_plan.summary:
+            lines.append(f"## Summary\n\n{weekly_plan.summary}\n")
+        for day in weekly_plan.days:
+            header = f"### Day {day.day}"
+            if day.title:
+                header += f": {day.title}"
+            lines.append(header)
+            if day.goals:
+                lines.append("- Goals:")
+                for g in day.goals:
+                    lines.append(f"  - {g}")
+            if day.tasks:
+                lines.append("- Tasks:")
+                for t in day.tasks:
+                    lines.append(f"  - {t}")
+            if day.resources:
+                lines.append("- Resources:")
+                for r in day.resources:
+                    lines.append(f"  - {r}")
+            lines.append("")
+
+        final_output = "\n".join(lines).strip()
         
         synthesizer_logger.info(
             "Synthesizer completed successfully",
@@ -352,6 +422,7 @@ def synthesizer_node(state: PlannerState) -> PlannerState:
                 "node": "synthesizer",
                 "action": "complete",
                 "final_output_length": len(final_output) if final_output else 0,
+                "days_count": len(weekly_plan.days or []),
             }
         )
         
