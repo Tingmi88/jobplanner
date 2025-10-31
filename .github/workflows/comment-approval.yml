@@ -1,0 +1,40 @@
+name: Comment-triggered PR approval
+
+on:
+  issue_comment:
+    types: [created]   # fires when someone comments on an Issue or PR
+
+permissions:
+  pull-requests: write # needed to create reviews
+  issues: read
+
+jobs:
+  approve:
+    if: >
+      github.event.issue.pull_request &&                                       
+      startsWith(github.event.comment.body, '/approve') &&                     
+      contains('WRITE,ADMIN,MAINTAIN', upper(join(fromJson(steps.perms.outputs.role))))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get commenter permission
+        id: perms
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          USER: ${{ github.event.comment.user.login }}
+        run: |
+          # returns one of: NONE, READ, TRIAGE, WRITE, MAINTAIN, ADMIN
+          ROLE=$(gh api repos/$REPO/collaborators/$USER/permission --jq .permission 2>/dev/null || echo NONE)
+          echo "role=$ROLE" >> "$GITHUB_OUTPUT"
+
+      - name: Approve the PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.issue.number }}
+        run: |
+          gh api \
+            --method POST \
+            repos/$REPO/pulls/$PR/reviews \
+            -f event=APPROVE \
+            -f body="Approved via /approve by ${{ github.actor }}"
