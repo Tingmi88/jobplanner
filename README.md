@@ -56,6 +56,7 @@ export OPENAI_API_KEY="your-openai-api-key"
 ```
 
 4. Add job data:
+  # need to update to auto creat job_name.json 
    - Place JSON job description files in `data/jobs/`
    - Each file should contain job details (title, company, description, etc.)
 
