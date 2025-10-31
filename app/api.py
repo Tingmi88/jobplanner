@@ -21,7 +21,6 @@ class PlanIn(BaseModel):
 def health():
     return {"ok": True}
 
-
 @app.post("/plan")
 def plan(payload: PlanIn):
     initial_input = {
