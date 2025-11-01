@@ -35,7 +35,8 @@ jobplanner/
 ### Prerequisites
 
 - Python 3.11+
-- OpenAI API key
+- Nebius API key
+- Tavily API key
 
 ### Installation
 
@@ -52,7 +53,8 @@ pip install -r requirements.txt
 
 3. Set up environment variables:
 ```bash
-export OPENAI_API_KEY="your-openai-api-key"
+export NEBIUS_API_KEY="your-nebius-api-key"
+export TAVILY_API_KEY="your-tavily-api-key"
 ```
 
 4. Add job data:
@@ -95,9 +97,8 @@ curl "http://localhost:8000/jobs"
 
 Environment variables:
 
-- `OPENAI_API_KEY` - Required: Your OpenAI API key
-- `LLM_MODEL` - Optional: LLM model to use (default: gpt-3.5-turbo)
-- `LLM_TEMPERATURE` - Optional: LLM temperature (default: 0.7)
+- `NEBIUS_API_KEY` - Required: Your Nebius API key for LLM access
+- `TAVILY_API_KEY` - Required: Your Tavily API key for web search
 - `DATA_DIR` - Optional: Data directory path (default: data)
 - `LOG_LEVEL` - Optional: Logging level (default: INFO)
 
@@ -107,14 +108,14 @@ Environment variables:
 
 ```bash
 docker build -f infra/Dockerfile -t jobplanner .
-docker run -p 8000:8000 -e OPENAI_API_KEY=your-key jobplanner
+docker run -p 8000:8000 -e NEBIUS_API_KEY=your-nebius-key -e TAVILY_API_KEY=your-tavily-key jobplanner
 ```
 
 ### Render.com
 
 1. Connect your repository to Render
 2. Use the `infra/render.yaml` configuration
-3. Set your `OPENAI_API_KEY` environment variable
+3. Set your `NEBIUS_API_KEY` and `TAVILY_API_KEY` environment variables
 4. Deploy!
 
 ## Development

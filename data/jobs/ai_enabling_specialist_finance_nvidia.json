@@ -1,0 +1,25 @@
+{
+  "title": "AI Enabling Specialist - Finance",
+  "company": "NVIDIA",
+  "description": "NVIDIA is hiring a Finance AI Enabling Specialist within the Finance Data Science and AI team. You will work alongside data scientists, data engineers, AI developers, finance, and other business partners integrating data science and AI into our business processes. We are looking for a flexible candidate who can guide finance through the complex, multi-faceted process of data platform onboarding, AI-enabled business process automation, security, and agentic integration.",
+  "requirements": [
+    "5+ years of professional experience in data engineering, automation, technical project / program management, or other related disciplines using data to drive business outcomes.",
+    "BS/MS or equivalent experience in Business Analytics, Data Science, Economics, Computer Science, or other technical fields.",
+    "Strong technical skills, including SQL, Python, & Databricks (or similar).",
+    "Excellent communication skills, with the ability to document and present current status and final projects to technical and business partners."
+  ],
+  "location": null,
+  "salary": "152,000 USD - 230,000 USD",
+  "type": "Full time",
+  "posted_date": null,
+  "benefits": [
+    "equity",
+    "benefits"
+  ],
+  "responsibilities": [
+    "Guide finance teams to help them identify and deploy the right combination of data tools based on their unique business needs. Assist them in implementation of machine learning, retrieval augmented generation, AI agents, and Databricks tools (AI-assisted programmatic automation, Genie, Agent Bricks, etc.).",
+    "Collaborate with finance to understand their data requirements and securely onboard their data into Finance’s Databricks instance via data engineering and partnership with data owners, including IT and external vendors.",
+    "Project management of technically and organizationally complex finance data and automation problems. Bridge the gap from today’s existing process to the speed of light in a way that allows for experimentation and learning while scaling enterprise AI solutions with our growing business.",
+    "Teach and train finance employees with varied technical skills to use a modern data platform by helping them reach their preferred levels of self-sufficiency and identifying gaps to success."
+  ]
+}
